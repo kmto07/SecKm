@@ -1,77 +1,49 @@
-1. 环境准备
-后端推荐：Python 3.10 或更高版本
+# SecKm - 基于安全大模型的网络告警智能化分析与批研判平台
 
-前端推荐：Node.js 16.x 或更高版本 / npm 8.x+
+<p align="center">
+  <img src="https://img.shields.io/badge/Frontend-Vue%203%20%7C%20TypeScript-42b883?style=flat-square&logo=vue.js" alt="Frontend">
+  <img src="https://img.shields.io/badge/UI_Library-Element%20Plus-409EFF?style=flat-square&logo=element-plus" alt="UI Library">
+  <img src="https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python-009688?style=flat-square&logo=fastapi" alt="Backend">
+  <img src="https://img.shields.io/badge/Database-SQLite%20%7C%20SQLAlchemy-003B57?style=flat-square&logo=sqlite" alt="Database">
+  <img src="https://img.shields.io/badge/Data_Process-Pandas-150458?style=flat-square&logo=pandas" alt="Pandas">
+</p>
 
-2. 后端服务配置与启动
-进入后端文件夹，配置大模型所需的环境变量（若不配置，系统将默认采用本地 http://127.0.0.1:8000/v1 端点作为基础服务提供）：
+## 📖 1. 项目基本说明
 
-Bash
-# 进入后端工作区
-cd backend
+在现代网络安全运营（SecOps）中，安全设备每天会产生海量的网络流量告警日志。传统特征码匹配机制存在较高的误报率，导致安全分析人员往往陷入“告警疲劳”中。
 
-# 安装所有必需的 Python 数据科学与 Web 依赖
-pip install -r requirements.txt
+**SecKm** (Security Knowledge Model) 是一个**基于安全大语言模型（LLM）的智能化网络告警研判平台**。本项目旨在深度结合传统安全数据治理与前沿 AI 能力，针对批量网络日志（如五元组、HTTP 请求/响应包）提供自动化、专家级的分析与研判支撑。
 
-# [可选] 配置您特定的大模型 API 密钥与基础服务路径 (以 Linux 为例)
-# export LLM_BASE_URL="[https://api.your-llm-provider.com/v1](https://api.your-llm-provider.com/v1)"
-# export LLM_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxx"
-# export LLM_MODEL_NAME="qwen-max" 或 "gpt-4"
+### ✨ 核心功能亮点
+* **智能化数据清洗与特征裁剪**：内置基于 `Pandas` 的数据处理引擎，自动过滤冗余网络噪点（如无用标头），定向提取具有攻击指纹的字段，大幅节省大模型 Token 消耗。
+* **隐私数据泛化脱敏**：利用正则引擎对 CSV 报文中的真实 IP 地址进行 `<IP_ADDR>` 泛化替换，确保内部网络拓扑和企业资产隐私不泄露。
+* **极简高效的研判看板**：专为一线运营人员裁剪的界面，摒弃冗杂信息，核心历史列表仅聚焦于 **时间、协议、端口、威胁等级** 四大关键维度，并支持一键下钻查看带优先级的修补建议报告。
+* **双模式研判引擎**：
+  * **批量上传研判**：支持导入 `.csv` 文件，系统自动并发推入模型分析并生成历史记录。
+  * **智能对话助手**：支持手动粘贴单条模糊报文或 payload 进行即时对话研判。
 
-# 启动高效异步 Web 服务器 (将在 8000 端口监听)
-uvicorn main:app --reload --port 8000
-提示：项目内置了自动化的 SQLite 增量迁移检查机制，首次运行程序时会自动在本地创建 security_alerts.db 数据库并补齐所有高级研判表字段，无需手动刷入 SQL 脚本。
+---
 
-3. 前端服务配置与启动
-打开新的终端窗口，进入前端工程文件夹执行依赖构建与启动：
+## 📂 2. 项目目录结构
 
-Bash
-# 进入前端工作区
-cd frontend
+本项目采用前后端分离架构，核心目录结构如下：
 
-# 安装工程所需的 Node 依赖包
-npm install
-
-# 启动本地热更新开发服务器 (通常运行在 5173 端口)
-npm run dev
-成功后，通过浏览器访问控制台输出的地址（如 http://localhost:5173）即可正式跨入大模型赋能的智能化安全研判世界。
-
-📋 接口端点定义概览 (API References)
-项目严格基于 RESTful 规范定义了以下生产级安全 API 交互接口：
-
-GET /api/v1/health : 系统可用性及网络连通性心跳监测。
-
-GET /api/v1/model-health : 动态探测底层安全大模型 API 的链路健康度。
-
-GET /api/v1/records : 获取专为运营裁剪的精简历史研判记录列表。
-
-GET /api/v1/records/{record_id} : 依据唯一自增 ID 下钻获取某条网络告警的完整分段研判专家报告。
-
-POST /api/v1/analyze : 接收单条完整的结构化流量数据包，并即时触发专家模型研判。
-
-POST /api/v1/chat : 交互式智能安全助手对话接口，支持输入任意模糊的网络原始日志。
-
-POST /api/v1/batch-analyze : 批量研判核心端点。通过 Multipart 表单接收 .csv 日志包，触发 Pandas 流水线清洗加工后，成批异步推入模型并在数据库中生成带时间线的历史报告。
-
-POST /api/v1/feedback : 人工纠错与反馈闭环机制接口。
-
-📄 开源许可证
-本项目基于 MIT License 许可证开源。
-"""
-
-with open("README.md", "w", encoding="utf-8") as f:
-f.write(readme_content)
-
-print("SUCCESS")
-
-Your Markdown file is ready
-[file-tag: code-generated-file-0-1779116489113919920]
-
-我已经为你生成了一份高度专业且排版精美的 `README.md` 文件。
-
-这份 README 完全基于你的项目代码以及之前我们讨论的修改需求量身定制。其中不仅包含了醒目的徽章（Badges）和极简的项目目录，还**着重介绍了你提出的项目核心亮点**：
-1. **智能化数据清洗与特征裁剪**：专门说明了利用 Pandas 解析 CSV、过滤精简请求头/响应头以节约 Token 的技术细节。
-2. **隐私敏感数据泛化脱敏**：说明了正则表达式将真实 IP 映射为 `<IP_ADDR>` 的隐私保护机制。
-3. **专为运营剪裁的极简研判历史看板**：明确标注了历史列表剔除了冗余分类，仅保留时间、协议、端口和威胁等级。
-
-你可以直接将这个文件放入你的 GitHub 仓库根目录中，它能够非常专业地向其他人（或者导师、面试官）展示你的
+```text
+SecKm/
+├── backend/                        # 后端 FastAPI 异步服务目录
+│   ├── main.py                     # 全局核心主程序：包含清洗管道、LLM 核心逻辑、API 路由
+│   ├── models.py                   # 数据库 ORM 实体层：定义告警记录核心多维字段
+│   ├── schemas.py                  # Pydantic 数据模型层：约束输入输出数据流
+│   ├── database.py                 # 数据库初始化脚本及 SQLite 引擎配置
+│   ├── requirements.txt            # 后端 Python 依赖清单
+│   └── security_alerts.db          # 运行时自动生成的 SQLite 轻量级关系型数据库
+│
+└── frontend/                       # 前端 Vue3 单页面应用工程目录
+    ├── src/
+    │   ├── components/
+    │   │   └── AlertDashboard.vue  # 核心业务面板：批量研判、智能对话、历史列表
+    │   ├── App.vue                 # Vue 根组件
+    │   ├── main.ts                 # 前端 TypeScript 入口文件
+    │   └── style.css               # 全局样式表
+    ├── package.json                # 前端 Node.js 项目依赖配置文件
+    └── vite.config.ts              # Vite 工程打包配置
