@@ -1,0 +1,20 @@
+eval.batch_size: 4
+eval.cutoff_len: 2048
+eval.dataset:
+- security_dataset_test
+eval.dataset_dir: data
+eval.max_new_tokens: 2048
+eval.max_samples: '100000'
+eval.output_dir: eval_sec_1
+eval.predict: true
+eval.temperature: 0.1
+eval.top_p: 0.7
+top.booster: auto
+top.checkpoint_path:
+- train_2026-05-01-06-48-46
+top.finetuning_type: lora
+top.model_name: Qwen2.5-7B-Instruct
+top.quantization_bit: none
+top.quantization_method: bnb
+top.rope_scaling: none
+top.template: qwen
