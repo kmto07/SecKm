@@ -50,3 +50,16 @@
 * **开发语言**：python
 * **框架**：Pytorch、FastAPI、Vue3
 * **核心技术**：大模型参数高效微调、深度语义向量化与自适应聚类深层语义表征、结构化思维链数据蒸馏
+
+## 4. 模块展示
+**智能对话助手**
+<img width="1920" height="869" alt="智能对话助手6" src="https://github.com/user-attachments/assets/23c92fdc-7871-49fc-8090-a49ec641b019" />
+**批量上传**
+<img width="1917" height="428" alt="批量上传6" src="https://github.com/user-attachments/assets/75302a47-3d96-46fb-ade7-f28dc0b1ce92" />
+**研判历史记录**
+<img width="1920" height="869" alt="研判历史7" src="https://github.com/user-attachments/assets/befdbef4-8db9-4b97-9564-75fe9a112514" />
+<img width="1920" height="869" alt="研判报告8-1" src="https://github.com/user-attachments/assets/e2f099e1-338a-45de-8c99-e0142f3de6de" />
+<img width="1920" height="869" alt="研判报告8-2" src="https://github.com/user-attachments/assets/61ca3942-7b8d-4cfe-b9c1-8b3495dda986" />
+
+
+
